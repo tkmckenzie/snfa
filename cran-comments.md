@@ -13,4 +13,4 @@ There was 1 NOTE:
     - This NOTE appears for all new packages.
 
 ## Downstream dependencies
-There are no downstream dependencies.
+There are currently no downstream dependencies for this package.
