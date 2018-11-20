@@ -9,7 +9,7 @@ There were no ERRORs or WARNINGs.
 There was 1 NOTE:
 
 ```
-checking CRAN incoming feasibility ... NOTE
+* checking CRAN incoming feasibility ... NOTE
 Maintainer: 'Taylor McKenzie <tkmckenzie@gmail.com>'
 
 New submission
