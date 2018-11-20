@@ -7,10 +7,13 @@
 There were no ERRORs or WARNINGs.
 
 There was 1 NOTE:
+```
+checking CRAN incoming feasibility ... NOTE
+Maintainer: 'Taylor McKenzie <tkmckenzie@gmail.com>'
 
-* checking CRAN incoming feasibility ... NOTE
-  Maintainer: 'Taylor McKenzie <tkmckenzie@gmail.com>'
-    - This NOTE appears for all new packages.
+New submission
+```
+	* This NOTE appears for all new packages.
 
 ## Downstream dependencies
 There are currently no downstream dependencies for this package.
