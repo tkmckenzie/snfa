@@ -13,7 +13,6 @@ checking CRAN incoming feasibility ... NOTE
 Maintainer: 'Taylor McKenzie <tkmckenzie@gmail.com>'
 
 New submission
-```
 
 	* This NOTE appears for all new packages.
 
