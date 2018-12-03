@@ -109,22 +109,22 @@
 #' #Plot frontier
 #' library(ggplot2)
 #' 
-#' frontier.df <- data.frame(X = rep(X.fit, times = 3),
+#' frontier.df <- data.frame(x = rep(X.fit, times = 3),
 #'                           y = c(frontier.u$y.fit, frontier.m$y.fit, frontier.mc$y.fit),
 #'                           model = rep(c("u", "m", "mc"), each = N.fit))
 #' 
-#' ggplot(univariate, aes(X, y)) +
+#' ggplot(univariate, aes(x, y)) +
 #'   geom_point() +
 #'   geom_line(data = frontier.df, aes(color = model))
 #'
 #' #Plot slopes
-#' slope.df <- data.frame(X = rep(X.fit, times = 3),
+#' slope.df <- data.frame(x = rep(X.fit, times = 3),
 #'                        slope = c(frontier.u$gradient.fit,
 #'                                  frontier.m$gradient.fit,
 #'                                  frontier.mc$gradient.fit),
 #'                        model = rep(c("u", "m", "mc"), each = N.fit))
 #'
-#' ggplot(slope.df, aes(X, slope)) +
+#' ggplot(slope.df, aes(x, slope)) +
 #'   geom_line(aes(color = model))
 #'   
 #' @references

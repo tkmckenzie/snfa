@@ -53,16 +53,16 @@
 #' 
 #' #Run model
 #' efficiency.model <- allocative.efficiency(X, y,
-#'                                          X.price, y.price,
-#'                                          X.constrained = X,
-#'                                          model = "br",
-#'                                          method = "mc")
+#'                                           X.price, y.price,
+#'                                           X.constrained = X,
+#'                                           model = "br",
+#'                                           method = "mc")
 #' 
 #' #Plot technical/allocative efficiency over time
 #' library(ggplot2)
 #' 
 #' technical.df <- data.frame(Year = USMacro$Year,
-#'                           Efficiency = efficiency.model$technical.efficiency)
+#'                            Efficiency = efficiency.model$technical.efficiency)
 #' 
 #' ggplot(technical.df, aes(Year, Efficiency)) +
 #'   geom_line()
