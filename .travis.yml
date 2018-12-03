@@ -7,3 +7,6 @@ addons:
   apt:
     packages:
       - glpk
+before_install:
+    - sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys F6609E60DC62814E
+  
