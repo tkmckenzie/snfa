@@ -1,7 +1,6 @@
 ---
 title: "Introduction to snfa"
 output: rmarkdown::html_vignette
-mathjax: local
 vignette: >
   %\VignetteIndexEntry{Introduction to dplyr}
   %\VignetteEngine{knitr::rmarkdown}
@@ -87,7 +86,6 @@ frontier.df <- data.frame(x = X.fit,
 ggplot(univariate, aes(x, y)) +
   geom_point() +
   geom_line(data = frontier.df, color = "red")
-
 slope.df <- data.frame(x = X.fit,
                        slope = frontier.mc$gradient.fit)
 ggplot(slope.df, aes(x, slope)) +
@@ -99,13 +97,54 @@ A more in-depth example examining different constraints can be found in the exam
 example("fit.boundary")
 ```
 
-The function `allocative.efficiency` uses SNFA to fit a production frontier, then uses the frontier to derive estimates of marginal input productivities. Those marginal productivities are compared to ratio of input to output prices to arrive at an estimate of overallocation. A full example can be run with the following code:
+The function `allocative.efficiency` uses SNFA to fit a production frontier, then uses the frontier to derive estimates of marginal input productivities. Those marginal productivities are compared to ratio of input to output prices to arrive at an estimate of overallocation. The example in `allocative.efficiency` estimates overallocation of labor and capital in the U.S. using macroeconomic data. First, data is loaded and cleaned:
 ```{r}
-example("allocative.efficiency")
+data(USMacro)
+
+USMacro <- USMacro[complete.cases(USMacro),]
+
+#Extract data
+X <- as.matrix(USMacro[,c("K", "L")])
+y <- USMacro$Y
+
+X.price <- as.matrix(USMacro[,c("K.price", "L.price")])
+y.price <- rep(1e9, nrow(USMacro)) #Price of $1 billion of output is $1 billion
+```
+
+Then, the model is fit with `allocative.efficiency`:
+```{r}
+#Run model
+efficiency.model <- allocative.efficiency(X, y,
+                                         X.price, y.price,
+                                         X.constrained = X,
+                                         model = "br",
+                                         method = "mc")
+```
+
+Finally, results are plotted and average overallocation is estimated:
+```{r}
+#Plot technical/allocative efficiency over time
+library(ggplot2)
+
+technical.df <- data.frame(Year = USMacro$Year,
+                          Efficiency = efficiency.model$technical.efficiency)
+
+ggplot(technical.df, aes(Year, Efficiency)) +
+  geom_line()
+allocative.df <- data.frame(Year = rep(USMacro$Year, times = 2),
+                            log.overallocation = c(efficiency.model$log.overallocation[,1],
+                                                   efficiency.model$log.overallocation[,2]),
+                            Variable = rep(c("K", "L"), each = nrow(USMacro)))
+
+ggplot(allocative.df, aes(Year, log.overallocation)) +
+  geom_line(aes(color = Variable))
+#Estimate average overallocation across sample period
+lm.model <- lm(log.overallocation ~ 0 + Variable, allocative.df)
+summary(lm.model)
 ```
 
 ## References
 
-Aigner D, Lovell CK, Schmidt P (1977). “Formulation and estimation of stochastic frontier production function models.” Journal of econometrics, 6(1), 21–37.
+Aigner D, Lovell CK, Schmidt P (1977). "Formulation and estimation of stochastic frontier production function models." Journal of Econometrics, 6(1), 21-37.
 
-Racine JS, Parmeter CF, Du P (2009). “Constrained nonparametric kernel regression: Estimation and inference.” Working paper.
+Racine JS, Parmeter CF, Du P (2009). "Constrained nonparametric kernel regression: Estimation and inference." Working paper.
