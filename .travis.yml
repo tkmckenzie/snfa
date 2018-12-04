@@ -4,9 +4,5 @@ language: r
 r:
     - release
     - devel
-r_packages:
-    - covr
-after_success:
-    - Rscript -e 'library(covr); codecov()'
 sudo: false
 cache: packages
