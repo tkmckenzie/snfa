@@ -36,7 +36,7 @@ dea.fit <- dea(univariate$x, univariate$y,
                univariate$x, univariate$y,
                model = "output",
                RTS = "variable")
-univariate$frontier <- univariate$y / dea.fit
+univariate$frontier <- univariate$y / dea.fit$thetaOpt
 ggplot(univariate, aes(x, y)) +
   geom_point() +
   geom_line(aes(y = frontier), color = "red")
@@ -52,7 +52,7 @@ If this quantity is positive, DMU $i$ used more of input $j$ than would be profi
 
 As detailed above, to estimate allocative inefficiency one needs to be able to estimate marginal input productivities, which are derivatives of the production function/frontier. Since DEA is piecewise-linear, there can be points on the estimated frontier where the derivative is undefined. Using the previous example, the points in blue in the following plot have undefined derivatives.
 ```{r, echo = FALSE}
-univariate$undefined <- dea.fit == 1
+univariate$undefined <- dea.fit$thetaOpt == 1
 ggplot(univariate, aes(x, y)) +
   geom_line(aes(y = frontier), color = "red") +
   geom_point(aes(color = undefined)) +

@@ -7,11 +7,15 @@
 #' @param YREF Matrix of outputs for observations used for constructing the frontier
 #' @param X Matrix of inputs for observations, for which DEA scores are estimated
 #' @param Y Matrix of outputs for observations, for which DEA scores are estimated
-#' @param model Orientation of the model; currently only "output" is supported
-#' @param RTS Returns-to-scale for the model; currently only "constant" and "variable" are supported
+#' @param model Orientation of the model; must be "input" or "output"
+#' @param RTS Returns-to-scale for the model; must be "constant", "non-increasing" or "variable"
 #' 
-#' @return Returns a vector of efficiency estimates corresponding to observations in
-#' X and Y.
+#' @return Returns a list with the following components
+#' \item{thetaOpt}{A vector of efficiency estimates, in [0, 1] interval}
+#' \item{lambda}{A matrix of constraint coefficients}
+#' \item{lambda_sum}{A vector of sum of lambdas; lambda_sum = 1 for variable RTS, lambda_sum <= for non-increasing RTS}
+#' \item{model}{Orientation of the model}
+#' \item{RTS}{Returns-to-scale for the model}
 #' 
 #' @details 
 #' This function estimates efficiency using data envelopment analysis. The linear program
@@ -27,7 +31,7 @@
 #'                univariate$x, univariate$y,
 #'                model = "output",
 #'                RTS = "variable")
-#' univariate$frontier <- univariate$y / dea.fit
+#' univariate$frontier <- univariate$y / dea.fit$thetaOpt
 #' 
 #' #Plot technical/allocative efficiency over time
 #' library(ggplot2)
@@ -36,12 +40,12 @@
 #'   geom_point() +
 #'   geom_line(aes(y = frontier), color = "red")
 #' 
+#' @references
+#' \insertRef{FareDEA}{snfa}
+#' 
 #' @export
 dea <-
   function(XREF, YREF, X, Y, model = "output", RTS = "variable"){
-  #Redefine dea to deal with out-of-sample prediction
-  #Works only for output oriented models (for now?)
-  
   #XREF, YREF constructs frontier
   #Efficiencies evaluated at X, Y
   #Rows differentiate observations
@@ -54,7 +58,8 @@ dea <-
   Y <- as.matrix(Y)
   
   #Input validation
-  if (!(RTS %in% c("constant", "variable"))) stop("RTS must be \"constant\" or \"variable\".")
+  if (!(RTS %in% c("constant", "variable", "non-increasing"))) stop("RTS must be \"constant\", \"variable\", or \"non-increasing\".")
+  if (!(model %in% c("input", "output"))) stop("model must be \"input\" or \"output\".")
   
   if (ncol(XREF) != ncol(X)){
     stop("XREF and X must have same number of columns.")
@@ -83,29 +88,74 @@ dea <-
   num.outputs <- ncol(YREF)
   num.inputs <- ncol(XREF)
   
-  pi.opt <- rep(NA, num.obs)
+  theta.opt <- rep(NA, num.obs)
+  lambda <- matrix(NA, nrow = num.obs, ncol = num.obs.ref)
+  
   f.obj <- c(1, rep(0, num.obs.ref))
-  for (i in 1:num.obs){
-    #Construct constraints
-    f.con <- rbind(cbind(Y[i,], -t(YREF)),
-                   cbind(0, t(XREF)))
-    f.dir <- rep("<=", num.outputs + num.inputs)
-    f.rhs <- c(rep(0, num.outputs), X[i,])
-    
-    #Create constraints for RTS other than constant
-    if (RTS == "variable"){
-      f.con <- rbind(f.con,
-                     c(0, rep(1, num.obs)))
-      f.dir <- c(f.dir, "==")
-      f.rhs <- c(f.rhs, 1)
+  
+  if (model == "output"){
+    for (i in 1:num.obs){
+      #Construct constraints
+      f.con <- rbind(cbind(Y[i,], -t(YREF)),
+                     cbind(0, t(XREF)))
+      f.dir <- rep("<=", num.outputs + num.inputs)
+      f.rhs <- c(rep(0, num.outputs), X[i,])
+      
+      #Create constraints for RTS other than constant
+      if (RTS == "variable"){
+        f.con <- rbind(f.con,
+                       c(0, rep(1, num.obs.ref)))
+        f.dir <- c(f.dir, "==")
+        f.rhs <- c(f.rhs, 1)
+      } else if (RTS == "non-increasing"){
+        f.con <- rbind(f.con,
+                       c(0, rep(1, num.obs.ref)))
+        f.dir <- c(f.dir, "<=")
+        f.rhs <- c(f.rhs, 1)
+      }
+      
+      lp.result <- lpSolve::lp(direction = "max",
+                               f.obj, f.con, f.dir, f.rhs)
+      if (lp.result$status != 0) stop(paste0("LP solver failed for observation ", i, "."))
+      
+      theta.opt[i] <- 1 / lp.result$objval
+      lambda[i,] <- lp.result$objective[-1]
     }
-    
-    lp.result <- lpSolve::lp(direction = "max",
-                             f.obj, f.con, f.dir, f.rhs)
-    if (lp.result$status != 0) stop(paste0("LP solver failed for observation ", i, "."))
-    
-    pi.opt[i] <- 1 / lp.result$objval
+  } else{
+    for (i in 1:num.obs){
+      #Construct constraints
+      f.con <- rbind(cbind(X[i,], -t(XREF)),
+                     cbind(0, t(YREF)))
+      f.dir <- rep(">=", num.outputs + num.inputs)
+      f.rhs <- c(rep(0, num.outputs), Y[i,])
+      
+      #Create constraints for RTS other than constant
+      if (RTS == "variable"){
+        f.con <- rbind(f.con,
+                       c(0, rep(1, num.obs.ref)))
+        f.dir <- c(f.dir, "==")
+        f.rhs <- c(f.rhs, 1)
+      } else if (RTS == "non-increasing"){
+        f.con <- rbind(f.con,
+                       c(0, rep(1, num.obs.ref)))
+        f.dir <- c(f.dir, "<=")
+        f.rhs <- c(f.rhs, 1)
+      }
+      
+      lp.result <- lpSolve::lp(direction = "min",
+                               f.obj, f.con, f.dir, f.rhs)
+      if (lp.result$status != 0) stop(paste0("LP solver failed for observation ", i, "."))
+      
+      theta.opt[i] <- lp.result$objval
+      lambda[i,] <- lp.result$objective[-1]
+    }
   }
   
-  return(pi.opt)
+  result <- list(thetaOpt = theta.opt,
+                 lambda = lambda,
+                 lambda_sum = rowSums(lambda),
+                 model = model,
+                 RTS = RTS)
+  
+  return(result)
 }

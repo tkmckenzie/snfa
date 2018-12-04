@@ -15,13 +15,17 @@ dea(XREF, YREF, X, Y, model = "output", RTS = "variable")
 
 \item{Y}{Matrix of outputs for observations, for which DEA scores are estimated}
 
-\item{model}{Orientation of the model; currently only "output" is supported}
+\item{model}{Orientation of the model; must be "input" or "output"}
 
-\item{RTS}{Returns-to-scale for the model; currently only "constant" and "variable" are supported}
+\item{RTS}{Returns-to-scale for the model; must be "constant", "non-increasing" or "variable"}
 }
 \value{
-Returns a vector of efficiency estimates corresponding to observations in
-X and Y.
+Returns a list with the following components
+\item{thetaOpt}{A vector of efficiency estimates, in [0, 1] interval}
+\item{lambda}{A matrix of constraint coefficients}
+\item{lambda_sum}{A vector of sum of lambdas; lambda_sum = 1 for variable RTS, lambda_sum <= for non-increasing RTS}
+\item{model}{Orientation of the model}
+\item{RTS}{Returns-to-scale for the model}
 }
 \description{
 Basic data envelopment analysis to replace rDEA::dea due to difficulties
@@ -41,7 +45,7 @@ dea.fit <- dea(univariate$x, univariate$y,
                univariate$x, univariate$y,
                model = "output",
                RTS = "variable")
-univariate$frontier <- univariate$y / dea.fit
+univariate$frontier <- univariate$y / dea.fit$thetaOpt
 
 #Plot technical/allocative efficiency over time
 library(ggplot2)
@@ -50,4 +54,7 @@ ggplot(univariate, aes(x, y)) +
   geom_point() +
   geom_line(aes(y = frontier), color = "red")
 
+}
+\references{
+\insertRef{FareDEA}{snfa}
 }
