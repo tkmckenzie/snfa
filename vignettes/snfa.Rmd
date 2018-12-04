@@ -8,7 +8,10 @@ vignette: >
 ---
 
 ```{r, echo = FALSE, message = FALSE}
-knitr::opts_chunk$set(collapse = T, comment = "#>")
+knitr::opts_chunk$set(collapse = T,
+                      comment = "#>",
+                      fig.align = "center",
+                      fig.width = 5)
 options(tibble.print_min = 4L, tibble.print_max = 4L)
 library(ggplot2)
 library(snfa)
@@ -51,8 +54,10 @@ $$\log\left(w_i^j\right) + \log\left(p_i\right) - \log\left(\delta_i\frac{\parti
 If this quantity is positive, DMU $i$ used more of input $j$ than would be profit maximizing.
 
 As detailed above, to estimate allocative inefficiency one needs to be able to estimate marginal input productivities, which are derivatives of the production function/frontier. Since DEA is piecewise-linear, there can be points on the estimated frontier where the derivative is undefined. Using the previous example, the points in blue in the following plot have undefined derivatives.
+
 ```{r, echo = FALSE}
-univariate$undefined <- dea.fit$thetaOpt == 1
+tol = 1e-3
+univariate$undefined <- abs(dea.fit$thetaOpt - 1) < tol
 ggplot(univariate, aes(x, y)) +
   geom_line(aes(y = frontier), color = "red") +
   geom_point(aes(color = undefined)) +
@@ -115,10 +120,10 @@ Then, the model is fit with `allocative.efficiency`:
 ```{r}
 #Run model
 efficiency.model <- allocative.efficiency(X, y,
-                                         X.price, y.price,
-                                         X.constrained = X,
-                                         model = "br",
-                                         method = "mc")
+                                          X.price, y.price,
+                                          X.constrained = X,
+                                          model = "br",
+                                          method = "mc")
 ```
 
 Finally, results are plotted and average overallocation is estimated:
@@ -127,7 +132,7 @@ Finally, results are plotted and average overallocation is estimated:
 library(ggplot2)
 
 technical.df <- data.frame(Year = USMacro$Year,
-                          Efficiency = efficiency.model$technical.efficiency)
+                           Efficiency = efficiency.model$technical.efficiency)
 
 ggplot(technical.df, aes(Year, Efficiency)) +
   geom_line()
