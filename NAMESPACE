@@ -2,6 +2,7 @@
 
 export(H.inv.select)
 export(allocative.efficiency)
+export(dea)
 export(fit.boundary)
 export(fit.mean)
 export(fit.sf)
