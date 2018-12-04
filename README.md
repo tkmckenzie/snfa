@@ -11,11 +11,11 @@ Fitting of non-parametric production frontiers for use in efficiency analysis. M
 install.packages("snfa")
 # The development version of snfa can also be installed from github:
 # install.packages("devtools")
-devtools::install_github("tkmckenzie/snfa")
+devtools::install_github("tkmckenzie/snfa", build_opts = "--no-resave-data")
 ```
 
 # Usage
-snfa contains methods for estimating smooth frontiers and various types of efficiency. The best way to get an overview of the package and its motivation is to go through the vignette:
+snfa contains methods for estimating smooth frontiers and various types of efficiency. The best way to get an overview of the package and its motivation is to go through the vignette (currenlty only available in development version from github):
 ```R
 vignette("snfa")
 ```
