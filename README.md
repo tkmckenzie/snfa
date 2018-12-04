@@ -15,7 +15,7 @@ devtools::install_github("tkmckenzie/snfa")
 ```
 
 # Usage
-snfa contains methods for estimating smooth frontiers and various types of efficiency. The best way to get an overview of the package is to go through the vignette:
+snfa contains methods for estimating smooth frontiers and various types of efficiency. The best way to get an overview of the package and its motivation is to go through the vignette:
 ```R
 vignette("snfa")
 ```
