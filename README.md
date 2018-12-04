@@ -7,8 +7,9 @@ Fitting of non-parametric production frontiers for use in efficiency analysis. M
 
 # Installation
 ```R
-# The latest stable version of snfa can be installed from CRAN:
+# The latest release version of snfa can be installed from CRAN:
 install.packages("snfa")
+
 # The development version of snfa can also be installed from github:
 # install.packages("devtools")
 devtools::install_github("tkmckenzie/snfa", build_opts = "--no-resave-data")
