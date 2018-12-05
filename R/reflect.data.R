@@ -12,17 +12,17 @@
 #' @examples
 #' data(univariate)
 #' 
-#' #Extract data
+#' # Extract data
 #' X <- as.matrix(univariate$x)
 #' y <- univariate$y
 #' 
-#' #Reflect data
+#' # Reflect data
 #' reflected.data <- reflect.data(X, y)
 #' 
 #' X.reflected <- reflected.data$X
 #' y.reflected <- reflected.data$y
 #' 
-#' #Plot
+#' # Plot
 #' library(ggplot2)
 #' 
 #' plot.df <- data.frame(X = X.reflected,

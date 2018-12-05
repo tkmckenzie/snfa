@@ -3,9 +3,8 @@
 snfa: Smooth Non-Parametric Frontier Analysis
 =============================================
 
-[![Travis build status](https://travis-ci.org/tkmckenzie/snfa.svg?branch=master)](https://travis-ci.org/tkmckenzie/snfa)
-[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/snfa)](https://cran.r-project.org/package=snfa)
-
+<!-- [![Travis build status](https://travis-ci.org/tkmckenzie/snfa.svg?branch=master)](https://travis-ci.org/tkmckenzie/snfa)
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/snfa)](https://cran.r-project.org/package=snfa) -->
 Overview
 ========
 

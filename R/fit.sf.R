@@ -69,11 +69,11 @@
 #' 
 #' USMacro <- USMacro[complete.cases(USMacro),]
 #' 
-#' #Extract data
+#' # Extract data
 #' X <- as.matrix(USMacro[,c("K", "L")])
 #' y <- USMacro$Y
 #' 
-#' #Fit frontier
+#' # Fit frontier
 #' fit.sf <- fit.sf(X, y,
 #'                  X.constrained = X,
 #'                  method = "mc")
@@ -81,7 +81,7 @@
 #' print(fit.sf$mean.efficiency)
 #' # [1] 0.9772484
 #' 
-#' #Plot efficiency over time
+#' # Plot efficiency over time
 #' library(ggplot2)
 #' 
 #' plot.df <- data.frame(Year = USMacro$Year,

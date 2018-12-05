@@ -55,7 +55,7 @@ results.df <- technical.efficiency.change(df = panel.production,
                                           firm.var.name = "Firm",
                                           time.var.name = "Year")
 
-#Plot changes over time by firm
+# Plot changes over time by firm
 library(ggplot2)
 
 ggplot(results.df, aes(Year, technical.change)) +

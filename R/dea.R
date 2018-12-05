@@ -33,7 +33,7 @@
 #'                RTS = "variable")
 #' univariate$frontier <- univariate$y / dea.fit$thetaOpt
 #' 
-#' #Plot technical/allocative efficiency over time
+#' # Plot technical/allocative efficiency over time
 #' library(ggplot2)
 #' 
 #' ggplot(univariate, aes(x, y)) +
