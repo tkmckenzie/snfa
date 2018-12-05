@@ -13,6 +13,7 @@ install.packages("snfa")
 # The development version of snfa can also be installed from github:
 # install.packages("devtools")
 devtools::install_github("tkmckenzie/snfa", build_opts = "--no-resave-data")
+install.packages(c("ggplot2", "knitr", "lpSolve", "Rdpack", "rmarkdown")) # Install suggested packages
 ```
 
 # Usage
