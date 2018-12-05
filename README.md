@@ -3,8 +3,8 @@
 snfa: Smooth Non-Parametric Frontier Analysis
 =============================================
 
-<!-- [![Travis build status](https://travis-ci.org/tkmckenzie/snfa.svg?branch=master)](https://travis-ci.org/tkmckenzie/snfa)
-[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/snfa)](https://cran.r-project.org/package=snfa) -->
+[![Travis build status](https://travis-ci.org/tkmckenzie/snfa.svg?branch=master)](https://travis-ci.org/tkmckenzie/snfa)
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/snfa)](https://cran.r-project.org/package=snfa)
 Overview
 ========
 
@@ -50,8 +50,7 @@ example("fit.boundary", prompt.prefix = "")
 
 > data(univariate)
 
-> #Set up data for fitting
-> 
+> # Set up data for fitting
 > X <- as.matrix(univariate$x)
 
 > y <- univariate$y
@@ -60,14 +59,14 @@ example("fit.boundary", prompt.prefix = "")
 
 > X.fit <- as.matrix(seq(min(X), max(X), length.out = N.fit))
 
-> #Reflect data for fitting
+> # Reflect data for fitting
 > reflected.data <- reflect.data(X, y)
 
 > X.eval <- reflected.data$X
 
 > y.eval <- reflected.data$y
 
-> #Fit frontiers
+> # Fit frontiers
 > frontier.u <- fit.boundary(X.eval, y.eval, 
 +                            X.bounded = X, y.bounded = y,
 +                            X.constrained = X.fit,
@@ -86,7 +85,7 @@ example("fit.boundary", prompt.prefix = "")
 +                             X.fit = X.fit,
 +                             method = "mc")
 
-> #Plot frontier
+> # Plot frontier
 > library(ggplot2)
 
 > frontier.df <- data.frame(x = rep(X.fit, times = 3),
@@ -101,7 +100,7 @@ example("fit.boundary", prompt.prefix = "")
 <img src="man/figures/README-unnamed-chunk-5-1.png" style="display: block; margin: auto;" />
 
 
-    > #Plot slopes
+    > # Plot slopes
     > slope.df <- data.frame(x = rep(X.fit, times = 3),
     +                        slope = c(frontier.u$gradient.fit,
     +                                  frontier.m$gradient.fit,
@@ -123,7 +122,7 @@ example("allocative.efficiency", prompt.prefix = "")
 
 > USMacro <- USMacro[complete.cases(USMacro),]
 
-> #Extract data
+> # Extract data
 > X <- as.matrix(USMacro[,c("K", "L")])
 
 > y <- USMacro$Y
@@ -132,14 +131,14 @@ example("allocative.efficiency", prompt.prefix = "")
 
 > y.price <- rep(1e9, nrow(USMacro)) #Price of $1 billion of output is $1 billion
 
-> #Run model
+> # Run model
 > efficiency.model <- allocative.efficiency(X, y,
 +                                           X.price, y.price,
 +                                           X.constrained = X,
 +                                           model = "br",
 +                                           method = "mc")
 
-> #Plot technical/allocative efficiency over time
+> # Plot technical/allocative efficiency over time
 > library(ggplot2)
 
 > technical.df <- data.frame(Year = USMacro$Year,
@@ -163,7 +162,7 @@ example("allocative.efficiency", prompt.prefix = "")
 <img src="man/figures/README-unnamed-chunk-6-2.png" style="display: block; margin: auto;" />
 
 
-    > #Estimate average overallocation across sample period
+    > # Estimate average overallocation across sample period
     > lm.model <- lm(log.overallocation ~ 0 + Variable, allocative.df)
 
     > summary(lm.model)
