@@ -9,7 +9,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.path = "man/figures/README-",
-  comment = "#>",
+  comment = "",
   fig.align = "center"
 )
 
@@ -51,12 +51,12 @@ example("allocative.efficiency")
 ## Boundary fitting
 
 ```{r}
-example("fit.boundary")
+example("fit.boundary", prompt.prefix = "")
 ```
 
 ## Allocative efficiency estimation
 ```{r}
-example("allocative.efficiency")
+example("allocative.efficiency", prompt.prefix = "")
 ```
 
 # Getting help and reporting bugs
