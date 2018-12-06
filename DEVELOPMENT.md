@@ -6,7 +6,7 @@ This document lays out plans for future development including adding new feature
 
 * (**COMPLETED**) Add vignette to package
 * (**COMPLETED**) Expand README and include examples
-* (**COMPLETED**) Move packages used only in examples (e.g., ggplot2) from Imports to Suggests
+* (**COMPLETED**) Move packages used only in examples (e.g., ggplot2) from Imports to Suggests, addresses Issue #2
 * (**COMPLETED**) Create custom DEA method, addresses Issue #1
 
 ## snfa v1.0.0
