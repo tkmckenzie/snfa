@@ -1,4 +1,6 @@
 ^\.travis\.yml$
+^DEVELOPMENT\.md$
+^ISSUES\.md$
 ^NEWS\.md$
 ^README\.md$
 ^README\.rmd$
